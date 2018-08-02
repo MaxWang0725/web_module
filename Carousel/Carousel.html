@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Carousel</title>
+    <style>
+    /*  */
+    body{
+        margin:0px;
+        padding: 0px;
+    }
+    #slider{
+        width: 400px;
+        height: 200px;
+        overflow: hidden;
+    }
+    #slider .pic img{
+        width: 400px;
+        height: 200px;
+    }
+    #slider .slider_btn {
+        position: absolute;
+        top: 174px;
+        left: 180px;
+    }
+    #slider .btn .slider_btn_round{
+        display: inline-block;
+        width: 13px;
+        height: 13px;
+        margin-right: 3px;
+        border-radius: 50%;
+        background: gray;
+        cursor: pointer;
+    }
+    #slider .slider_btn1 .slider_btn_arrow:first-child{
+        position: absolute;
+        top: 95px;
+        left: 15px;
+        width: 15px;
+        height: 15px;
+        border-top: 2px solid #ffffff;
+        border-right: 2px solid #ffffff;
+        transform: rotate(225deg);       
+    }
+    #slider .slider_btn1 .slider_btn_arrow:last-child{
+        position: absolute;
+        top: 95px;
+        left: 360px;
+        width: 15px;
+        height: 15px;
+        border-top: 2px solid #ffffff;
+        border-right: 2px solid #ffffff;
+        transform: rotate(45deg);   
+    }
+    
+    a{
+        cursor: move;
+    }
+    </style>
+</head>
+<body>
+    <div id="slider">
+        <div class="pic">
+            <a href="#"><img src='img/1.png' title="1" alt="1"></a>
+            <a href="#"><img src='img/2.jpg' title="2" alt="2"></a>
+            <a href="#"><img src='img/3.png' title="3" alt="3"></a>
+            <a href="#"><img src='img/4.jpg' title="4" alt="4"></a>
+            <a href="#"><img src="img/5.jpg" title='5' alt="5"></a>
+        </div>
+        <div class="btn"></div>
+    </div>
+    <script>
+    /* 1.初始化     a.模版  b.按键
+    *  2.切换类型   c.切换间隔时间  d.mouseenter事件
+    *  3.开始切换   e.幻灯片样式
+    */
+    //new Carousel(obj)
+    /*obj = {
+        templet: row column window,  模版
+        btn: arrow || round || true, 按键
+        time: num || false, 间隔时间
+        mouseEnter: true || fasle,  鼠标悬停是否切换
+        slideStyle: 
+    }
+    */
+    var slider = document.querySelector('#slider')
+
+    var Carousel = function(obj){
+        var Obj = {
+            ele:null,
+            //obj:object,
+            templet:'row',
+            btn:'round',
+            time:3000,
+            mouseEnter:false,
+            sliderStyle:1,
+        //
+            timer:null,
+            times:null,
+            num:0,
+        }
+        
+        this.o = Object.assign(Obj,obj)
+        
+        console.log(this.o)
+        this.init()
+    }
+    Carousel.prototype = {
+        init:function(){
+            this.createSlider()
+        },
+        createSlider:function(){
+            this.createSeamlessWheel()
+            if(this.o.templet == 'row'){
+                this.createTempletRow()
+            }else if(this.o.templet == 'column'){
+
+            }else{
+
+            }
+            this.addListenerBtn()
+            
+        },
+        //a.模版(row  column  window)
+        createTempletRow:function(){
+            //var slider = this.id
+            var pic = this.o.ele.querySelectorAll('div')[0]
+            var imgs = pic.querySelectorAll('img')
+            //slider.style.overflow = 'hidden'
+            pic.style.width = imgs[0].offsetWidth * imgs.length + 'px'
+            pic.style.height = imgs[0].offsetHeight + 'px'
+            pic.style.position = 'relative'
+            pic.style.fontSize = '0'
+            if(this.o.btn == true){
+                this.create_btn_round()
+                this.create_btn_arrow()
+            }else if(this.o.btn == 'round'){
+                this.create_btn_round()
+            }else if(this.o.btn == 'arrow'){
+                this.create_btn_arrow()
+            }else{
+
+            }
+
+            this.autoPalySlider()
+        },
+        //b.按键(arrow  column  true)
+        create_btn_round:function(){
+            var pic = this.o.ele.querySelectorAll('div')[0]
+            var btn = this.o.ele.querySelectorAll('div')[1]
+            var imgs = pic.querySelectorAll('img')
+
+            var round = this._createElement('div','slider_btn',btn)
+            for(let i = 0;i < imgs.length - 2;i++){
+                this._createElement('span','slider_btn_round',round)
+                //a.style.display = 'inline-block'
+            }
+            var a = btn.querySelectorAll('.slider_btn_round')
+            a[0].style.background = 'yellow'
+            //this.addListenerBtn()
+        },
+        create_btn_arrow:function(){
+            var btn = this.o.ele.querySelectorAll('div')[1]
+            var arrow = this._createElement('div','slider_btn1',btn)
+            for(let i = 0;i < 2;i++){
+                this._createElement('span','slider_btn_arrow',arrow)
+            }
+
+        },
+        createSeamlessWheel:function(){
+            var pic = this.o.ele.querySelectorAll('div')[0]
+            if(pic.querySelectorAll('a')){
+                var a = pic.querySelectorAll('a')
+                var firstA = a[0].cloneNode(true)
+                var lastA = a[a.length-1].cloneNode(true)
+                pic.appendChild(firstA)
+                pic.insertBefore(lastA,a[0])
+                //row
+                pic.style.left = -(a[0].offsetWidth) + 'px' 
+            }else if(pic.querySelectorAll('img')){
+                var imgs = pic.querySelectorAll('img')
+                var firstImg = imgs[0].cloneNode(true)
+                var lastImg = imgs[imgs.length-1].cloneNode(true)
+                pic.appendChild(firstImg)
+                pic.insertBefore(lastImg,imgs[0])
+                pic.style.left = -(imgs[0].offsetWidth) + 'px'
+            }
+        },
+        _createElement:function(ele,className,parent){
+            var a = document.createElement(ele)
+            a.setAttribute('class',className)
+            parent.appendChild(a)
+            return a
+        },
+        /*
+        *
+        */
+        autoPalySlider:function(){
+            var imgs = this.o.ele.querySelectorAll('div')[0].querySelectorAll('img')
+            var that = this
+            //var asd = 123
+            if(this.o.templet == 'row'){
+                this.o.timer = setInterval(function(){
+                    that.autoPlay(that)
+                },that.o.time)    
+            }
+            
+        },
+        autoPlay:function(that){
+            var imgs = that.o.ele.querySelectorAll('div')[0].querySelectorAll('img')
+            if(that.o.num == imgs.length - 3){
+                that.o.num = 0
+            }else{
+                that.o.num++
+            }
+                    
+            that.animal_row(that)
+            that.animal_btn(that)
+        },
+        animal_row:function(that){
+            var pic = that.o.ele.querySelectorAll('div')[0]
+            var imgs = pic.querySelectorAll('img')
+            var picLeft = parseFloat(window.getComputedStyle(pic,null).left)
+            var imgWidth = imgs[0].offsetWidth
+            var iLength = imgs.length - 1
+            console.log(picLeft + '   ' + that.o.num * -imgWidth + '   ' + that.o.num)
+            //
+            if(picLeft < -10000 || picLeft > 1000) return
+
+            if(picLeft < -imgWidth * iLength + 1){
+                if(picLeft !== -imgWidth * iLength){
+                    pic.style.left = picLeft - 5 + 'px'
+                    that.o.times = setTimeout(function(){
+                        that.animal_row(that)
+                    },30)    
+                }else{
+                    pic.style.left = -imgWidth + 'px'
+                }
+            }else if(picLeft !== (-imgWidth * that.o.num) - imgWidth){
+                pic.style.left = picLeft - 10 + 'px'
+                that.o.times = setTimeout(function(){
+                    that.animal_row(that)
+                },30)
+            }else{
+                
+            }  
+
+        },
+        animal_btn:function(that){
+            var btns = that.o.ele.querySelectorAll('.slider_btn')[0].querySelectorAll('span')
+
+            for (let i = 0; i < btns.length; i++) {
+                if(that.o.num == i){
+                    btns[i].style.background = 'yellow'
+                }else{
+                    btns[i].style.background = ''
+                }
+            }
+        },
+        //
+        //
+        //
+        animal_btn_round_position:function(num){
+            var pic = this.o.ele.querySelectorAll('div')[0]
+            var imgs = pic.querySelectorAll('img')
+            var iWidth = imgs[0].offsetWidth
+            var iLength = imgs.length
+            var that = this
+
+            clearInterval(this.o.timer)
+            clearTimeout(this.o.times)
+            if(pic.offsetLeft > (-iWidth * num) - iWidth){        
+                pic.style.left = pic.offsetLeft - 50 + 'px'
+                this.o.times = setTimeout(function(){
+                    that.animal_btn_round_position(num)
+                },30)
+            }else if(pic.offsetLeft < (-iWidth * num) - iWidth){
+                //clearInterval(this.o.timer)
+                //clearTimeout(this.o.times)
+                pic.style.left = pic.offsetLeft + 50 + 'px'
+                this.o.times = setTimeout(function(){
+                    that.animal_btn_round_position(num)
+                },30)
+            }else{
+                this.o.num = num
+            }    
+        },
+        animal_btn_round_color:function(num){
+            var btn = this.o.ele.querySelectorAll('.slider_btn_round')
+            
+            for(let i = 0;i < btn.length;i++){
+                if(i == num){
+                    btn[i].style.background= 'yellow'
+                }else{
+                    btn[i].style.background = ''
+                }
+            }
+        },
+        animal_btn_arrow_color:function(){
+            var btns = this.o.ele.querySelectorAll('.slider_btn_arrow')
+            var that = this
+
+            for(let i = 0;i < btns.length;i++){
+                btns[i].addEventListener('mouseenter',function(){
+                    this.style.cursor = 'pointer'
+                })
+                btns[i].addEventListener('mouseout',function(){
+                    this.style.cursor = ''
+                })
+            }
+        },
+        animal_btn_arrow_left:function(){
+            var pic = this.o.ele.querySelectorAll('div')[0]
+            var that = this
+            var iLength = pic.querySelectorAll('img').length - 1
+            var iWidth = pic.querySelectorAll('img')[0].offsetWidth
+            var picLeft = pic.offsetLeft
+
+            clearInterval(this.o.timer)
+            clearTimeout(this.o.times)
+            console.log(this.o.num)
+            
+            // -1.0      0.400   1.800   2.1200    3.1600    4.2000      5.2400
+            //                            num * width
+            if(picLeft == 0){
+                pic.style.left = -iWidth * (iLength - 1) + 'px'
+                this.o.timer = setInterval(function(){that.autoPlay(that)},this.o.time)
+            }else if(this.o.num == iLength - 2){
+                if(picLeft !== 0){
+                    pic.style.left = picLeft + 50 + 'px'
+                    this.o.times = setTimeout(function(){
+                        that.animal_btn_arrow_left()
+                    },30)
+                }
+            }else if(picLeft !== (this.o.num * -iWidth) + -iWidth){
+                pic.style.left = picLeft + 50 + 'px'
+                this.times = setTimeout(function(){
+                    that.animal_btn_arrow_left()
+                },30)
+            }else{
+                this.timer = setInterval(function(){that.autoPlay(that)},this.o.time)
+            }
+        },
+        animal_btn_arrow_right:function(){
+            var pic = this.o.ele.querySelectorAll('div')[0]
+            var that = this
+            var iLength = pic.querySelectorAll('img').length - 1
+            var iWidth = pic.querySelectorAll('img')[0].offsetWidth
+            var picLeft = pic.offsetLeft
+            
+            clearInterval(this.o.timer)
+            clearTimeout(this.o.times)
+            console.log(this.o.num)
+            // 0.400    1.800   2.1200   3.1600
+            // num * -width - width
+            if(picLeft == iLength * -iWidth){
+                pic.style.left = -iWidth + 'px'
+                this.o.timer = setInterval(function(){that.autoPlay(that)},that.o.time)
+            }else if(picLeft !== this.o.num * -iWidth - iWidth){
+                pic.style.left = picLeft - 50 + 'px'
+                this.o.times = setTimeout(function(){
+                    that.animal_btn_arrow_right()
+                },30)
+            }else{
+                this.o.timer = setInterval(function(){that.autoPlay(that)},this.o.time)
+            }
+            
+        },
+        /*
+        *
+        */
+        addListenerBtn:function(){
+            if(this.o.btn == true){
+                this.addListener_btn_round()
+                this.addListener_btn_arrow()
+            }else if(this.o.btn == 'round'){
+                this.addListener_btn_round()
+            }else if(this.o.btn == 'arrow'){
+                this.addListener_btn_arrow()
+            }
+        },
+        addListener_btn_round:function(){
+            //var pic = this.o.ele.querySelectorAll('div')[0]
+            //var imgs = pic.querySelectorAll('img')
+            var btns = this.o.ele.querySelectorAll('.slider_btn_round')
+            var that = this
+            for(let i = 0;i < btns.length;i++){
+                btns[i].addEventListener('mouseenter',function(){
+                    var times = that.o.times
+                    console.log(times)
+                    clearInterval(that.o.timer)
+                    clearTimeout(that.o.times)
+                    for(let i = 0;i < btns.length;i++){
+                        if(btns[i] == this){
+                            that.o.num = i - 1
+                            that.animal_btn_round_position(i)
+                            that.animal_btn_round_color(i)
+                        }
+                    }
+                })
+                btns[i].addEventListener('mouseout',function(){
+                    that.o.timer = setInterval(function(){
+                        that.autoPlay(that)
+                    },that.o.time)
+                })
+            }
+        },
+        addListener_btn_arrow:function(){
+            var imgs = this.o.ele.querySelectorAll('img')
+            var btns = this.o.ele.querySelectorAll('.slider_btn_arrow')
+            var that = this
+            this.animal_btn_arrow_color()
+            
+            btns[0].addEventListener('mousedown',function(){
+                if(that.o.num == 0){
+                    that.o.num = imgs.length - 3    
+                }else{
+                    that.o.num--  
+                }
+                that.animal_btn_arrow_left()
+                that.animal_btn(that)
+            })
+            btns[1].addEventListener('mousedown',function(){
+                if(that.o.num == imgs.length - 3){
+                    that.o.num = 0
+                }else{
+                    that.o.num++
+                }
+                that.animal_btn_arrow_right()
+                that.animal_btn(that)
+            })
+        }
+        
+    }
+
+    //new Carousel(slider,{btn:'arrow'})
+    new Carousel({ele:slider,btn:'arrow'})
+
+    </script>
+</body>
+</html>
