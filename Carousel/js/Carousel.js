@@ -30,7 +30,11 @@ Carousel.prototype = {
         this.createStyle()
         this.createBtn()
         //
+        this.addEvent()
         this.autoPlay()
+    },
+    addEvent:function(){
+        this.addEventBtn()
     },
     autoPlay:function(){
         var that = this
@@ -73,6 +77,26 @@ Carousel.prototype = {
         parent.appendChild(a)
         return a
     },
+    //Event
+    addEventBtn:function(){
+        var that = this
+        this.btn.addEventListener('mousedown',function(){
+            var target = event.target
+            if(target !== that.btn){
+                console.log(target)
+                for(let i = 0;i < that.length;i++){
+                    if(target == that.rounds[i]){
+                        target.setAttribute('class','btn_round btn_hover')
+                        that.positionImg(i)
+                    }else{
+                        that.rounds[i].setAttribute('class','btn_round')
+                    }
+                }
+
+            }
+
+        })
+    },
     //animal
     animalImg:function(that){
         var pLeft = that.pic.offsetLeft
@@ -104,6 +128,33 @@ Carousel.prototype = {
                 that.rounds[i].setAttribute('class','btn_round')
             }
         }
-    }
+    },
+    //position
+    positionImg:function(num){
+        var that = this
+        var pLeft = this.pic.offsetLeft
+        var nLeft = num * -this.Width
+        console.log(pLeft + ' ' + nLeft)
+        
+        clearInterval(this.O.timer)
+        clearTimeout(this.O.times)
+        if(nLeft > pLeft){
+            this.pic.style.left = pLeft + (this.Width * 0.1) + 'px'
+            this.O.times = setTimeout(function(){that.positionImg(num)},50)
+        }else if(nLeft < pLeft){
+            this.pic.style.left = pLeft - (this.Width * 0.1) + 'px'
+            this.O.times = setTimeout(function(){that.positionImg(num)},50)
+        }else{
+            this.O.num = num + 1
+            this.O.timer = setInterval(function(){
+                console.log(that.O.num)
+                that.animalImg(that)
+                that.animalBtn(that)
+            },that.O.time)
+            
+        }
 
+
+
+    }
 }
