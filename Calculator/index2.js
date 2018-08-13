@@ -20,6 +20,11 @@ Calculator.prototype = {
             span[i].addEventListener('mousedown',function(){
                 var val = this.innerText
                 that.addData(val)
+                if(that.num.length !== 0){
+                    document.querySelector('.cow1').querySelector('span').innerText = 'C'
+                }else{
+                    document.querySelector('.cow1').querySelector('span').innerText = 'AC'
+                }
                 that.p.innerText = that.data + '||' + that.num + '||' + that.arith
             })
         }
@@ -49,55 +54,56 @@ Calculator.prototype = {
             this.num = ''
             */
             this.judgement()
-
-
             break;
             case "-":
-            this.arith = "-"
-            this.judgement()
+                this.arith = "-"
+                this.judgement()
                 break;
             case "x":
-            this.arith = 'x'
-            this.judgement()
+                this.arith = 'x'
+                this.judgement()
                 break;
             case '/':
-            this.arith = '/'
-            this.judgement()
+                this.arith = '/'
+                this.judgement()
                 break;
             case '%':
-            this.arith = '%'
-            this.judgement()
+                this.arith = '%'
+                this.judgement()
                 break;
-            case 'c':
-
+            //
+            case '--':
+                this.num = -this.num
                 break;
+            case '.':
+                this.num += '.'
+                break;    
             case '=':
-            this.arith = '='
-
-            if(this.data.length !==1  && this.num.length !== 0){
-                this.data[2] = parseFloat(this.num)
-                this.ariData()
-            }
-
-            this.num = ''
+                this.arith = '='
+                if(this.data.length !==1  && this.num.length !== 0){
+                    this.data[2] = parseFloat(this.num)
+                    this.ariData()
+                }
+                this.num = ''
                 break;
             case 'AC':
-            this.data = []
-            this.num = ''
-            this.arith = ''
-            this.inp.value = '0'
-            break;
-
-            default:
-            if(this.data[1] == '=' && typeof this.end == 'number'){         //判断是否初始化
                 this.data = []
-            }   
-            this.num += val
-            this.inp.value = this.num
-            break;
+                this.num = ''
+                this.arith = ''
+                this.inp.value = '0'
+                break;
+            case 'C':
+                this.num = ''
+                this.inp.value = 0
+                break;
+            default:
+                if(this.data[1] == '=' && typeof this.end == 'number'){         //判断是否初始化
+                    this.data = []
+                }   
+                this.num += val
+                this.inp.value = this.num
+                break;
         }
-        
-        
     },
     ariData:function(){
         //[num,'+',num]
@@ -129,11 +135,8 @@ Calculator.prototype = {
                 break;
             case '=':
                 
-            break;
+                break;
         }
-
-        //[]
-        //num = 1
     },
     judgement:function(){
         if(typeof this.data[1] !== 'number' && this.data.length === 2 && this.num.length !== 0){     
@@ -147,6 +150,4 @@ Calculator.prototype = {
         }
         this.num = ''
     }
-
-
 }
