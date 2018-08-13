@@ -76,7 +76,10 @@ Calculator.prototype = {
                 this.num = -this.num
                 break;
             case '.':
-                this.num += '.'
+                if(this.num.length !== 0 && this.num.indexOf('.') == -1){
+                   this.num += '.' 
+                }
+                
                 break;    
             case '=':
                 this.arith = '='
