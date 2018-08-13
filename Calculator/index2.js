@@ -40,21 +40,9 @@ Calculator.prototype = {
     addData:function(val){
         switch(val){
             case "+":
-            this.arith = "+"
-            /*
-            if(typeof this.data[1] !== 'number' && this.data.length === 2 && this.num.length !== 0){     
-                this.data[2] = parseFloat(this.num)
-                this.ariData()
-            }else if(this.data.length == 2){
-                this.data[1] = this.arith
-            }else if(this.num.length !== 0){
-                this.data[0] = parseFloat(this.num)
-                this.data[1] = this.arith
-            }
-            this.num = ''
-            */
-            this.judgement()
-            break;
+                this.arith = "+"
+                this.judgement()
+                break;
             case "-":
                 this.arith = "-"
                 this.judgement()
@@ -71,9 +59,13 @@ Calculator.prototype = {
                 this.arith = '%'
                 this.judgement()
                 break;
-            //
+            //==================
+            
             case '--':
-                this.num = -this.num
+                if(this.num.length !== 0){
+                    this.num = -this.num
+                    this.inp.value = this.num
+                }
                 break;
             case '.':
                 if(this.num.length !== 0 && this.num.indexOf('.') == -1){
