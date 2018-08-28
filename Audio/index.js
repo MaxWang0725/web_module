@@ -20,7 +20,6 @@ Audio.prototype = {
     },
     addScr:function(){
         this.audio.src = this.src[this.numMusic].src
-        //this.createObj()
     },
     addGround:function(){
         var pName = this.el.querySelector('.bGround').querySelector('.name')
@@ -35,30 +34,6 @@ Audio.prototype = {
         this.prevEvent()
         this.nextEvent()
         this.progressBarTime()
-    },
-    //发布-订阅者模式
-    createObj:function(){
-        var that = this
-        this.src.forEach(function(key){
-            //key._time = 0
-            var val = key.time
-            Object.defineProperty(key,'time',{
-                get:function(){
-                    return val
-                },
-                set:function(newVal){
-                    val = newVal
-                    //console.log(this.time)
-                    this.timeBar = setTimeout(that.musicTime,1000)    
-                }
-            })
-        });
-    },
-    musicTime:function(){
-        console.log(this.src[this.numMusic].time)
-        console.log(parseInt(this.audio.currentTime))
-        //this.src[this.numMusic].time = parseInt(this.audio.currentTime)
-        
     },
     //Event
     playEvent:function(){
@@ -137,7 +112,7 @@ Audio.prototype = {
         })
 
     },
-    //translate
+    //Translate
     bGroundUp:function(){
         clearTimeout(this.timeGround)
         var that = this
@@ -280,20 +255,4 @@ Audio.prototype = {
 
 
     },
-    //进度条播放
-    createMusicTime:function(){
-        var that = this
-        var bar = this.el.querySelector('.bGround').querySelector('.progressBar')
-        var barTime = bar.querySelector('.bar-time')
-        var bWidth = parseFloat(window.getComputedStyle(bar,null).width)
-        
-        this.audio.oncanplay = function(){
-            var musicTime = that.audio.duration
-            console.log(musicTime)
-        }
-        
-    },
-    barTime:function(){
-
-    }
 }
