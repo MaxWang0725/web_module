@@ -1,0 +1,136 @@
+#container{
+    display: inline-block;
+    position: relative;
+    left: 30%;
+    top: 250px;
+}
+#container .box{
+    display: flex;
+    width: 360px;
+    height: 85px;
+    border-radius: 15px;
+    background: rgba(245, 242, 242, 0.904);
+}
+/* box-cover */
+#container .box .box-cover {
+    width: 35%;
+}
+#container .box .box-cover img{
+    display: inline-block;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    position: relative;
+    left: 24px;
+    top: -25px;
+    background: pink;
+}
+
+/* box-button */
+#container .box .box-butt{
+    display: flex;
+    width: 65%;
+}
+#container .box .box-butt div{
+    display: inline-block;
+    width: 70px;
+    height: 70px;
+    margin:7px 3px;
+    border-radius: 8px;
+}
+#container .box .box-butt .prev-icon{
+    font-size: 0;
+    line-height: 0;
+    border-width: 10px;
+    border-color: rgb(209, 203, 203);
+    border-left-width: 0;
+    border-style: dashed;
+    border-left-style: solid;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 3px;
+    position: relative;
+    left: 24px;
+    top: 19px;
+}
+#container .box .box-butt .next-icon{
+    font-size: 0;
+    line-height: 0;
+    border-width: 10px;
+    border-color: rgb(209, 203, 203);
+    border-right-width: 0;
+    border-style: dashed;
+    border-left-style: solid;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    position: relative;
+    border-radius: 3px;
+    left: 27px;
+    top: 19px;
+}
+#container .box .box-butt .play-icon{
+    font-size: 0;
+    line-height: 0;
+    border-width: 14px;
+    border-color: rgb(209, 203, 203);
+    border-right-width: 0;
+    border-style: dashed;
+    border-left-style: solid;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    position: relative;
+    border-radius: 3px;
+    left: 30px;
+    top: 19px;
+}
+#container .box .box-butt .pause-icon{
+    display: inline-block;
+    width: 8px;
+    height: 30px;
+    background: rgb(209, 203, 203);
+    position: relative;
+    border-radius: 3px;
+    left: 22px;
+    top: 20px;  
+}
+/* background */
+#container .bGround {
+    width: 320px;
+    height: 65px;
+    position: absolute;
+    float: left;
+    top: 0px;
+    left: 24px;
+    background-color: antiquewhite;
+    border-radius: 5px;
+    z-index: -1;
+    opacity: 0;
+}
+#container .bGround p{
+    margin: 0px;
+    padding: 0px;
+    font-size: 10px;
+    position: relative;
+    top: 14px;
+    left: 120px;
+}
+#container .bGround .progressBar{
+    float: left;
+    width: 180px;
+    height: 4px;
+    border-radius: 3px;
+    background-color: azure;
+    position: relative;
+    top: 22px;
+    left: 120px;
+}
+#container .bGround .progressBar .bar-time{
+    display: inline-block;
+    width: 0px;
+    height: 4px;
+    border-radius: 3px;
+    background-color: red;
+    position: relative;
+    top:-13px;
+}
+

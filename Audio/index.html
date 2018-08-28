@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <script src="index.js"></script>
+    <title>music_app</title>
+</head>
+<body>
+    <div id="container">
+        <audio>
+        </audio>
+        <div class="bGround">
+            <p class="name"></p>
+            <p class="singer"></p>
+            <div class="progressBar">
+                <span class="bar-time"></span>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-cover">
+                <img src="img/folder.jpg" alt="" style="transform:rotate(0deg);">
+            </div>
+            <div class="box-butt">
+                <div class="prev">
+                    <span class="prev-icon"></span>
+                    <span class="prev-icon"></span>
+                </div>
+                <div class="play-pause"> 
+                    <span class="play-icon"></span>
+                    <span class=""></span>
+                </div>
+                <div class="next">
+                    <span class="next-icon"></span>
+                    <span class="next-icon"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        var con = document.querySelector('#container')
+        //new Audio(con,[['music/Hyper - Spoiler Original Mix.mp3','img/folder.jpg'],['music/万能青年旅店 - 十万嬉皮.mp3','img/folder.jpg']])
+        var M = new Audio(con,[{img:'img/folder.jpg',src:'music/Hyper - Spoiler Original Mix.mp3',time:0}])
+
+    </script>
+</body>
+</html>

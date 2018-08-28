@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src=loadOnDemand.js></script>
+    <title>懒加载</title>
+</head>
+<body>
+    <div id="div">
+        <img src="../../picture/load.gif" data-src='../../picture/1.png'>
+        <img src="../../picture/load.gif" data-src='../../picture/2.jpg'>
+        <img src="../../picture/load.gif" data-src='../../picture/3.png'>
+        <img src="../../picture/load.gif" data-src='../../picture/4.jpg'>
+    </div>
+    <script>
+        var div = document.querySelector('#div')
+        new loadOnDemand(div)
+    </script>
+</body>
+</html>
